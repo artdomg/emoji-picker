@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import 'semantic-ui-css/semantic.min.css';
+import { Input, Button, Popup } from 'semantic-ui-react';
 
-function App() {
+import EmojiPicker from './components/EmojiPicker';
+import styles from './App.module.css';
+
+const App = () => {
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [textValue, setTextValue] = useState('');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className={styles.App}>
+      <Input
+        type='text'
+        placeholder='Your emojis go here'
+        action
+        value={textValue}
+        onChange={(e, data) => setTextValue(data.value)}
+      >
+        <input />
+        <Popup
+          on='click'
+          open={emojiPickerOpen}
+          onClose={() => setEmojiPickerOpen(false)}
+          onOpen={() => setEmojiPickerOpen(true)}
+          trigger={<Button content='😀' onClick={() => setEmojiPickerOpen((open) => !open)} />}
         >
-          Learn React
-        </a>
-      </header>
+          <EmojiPicker
+            onSelect={(emoji) => setTextValue(`${textValue}${emoji}`)}
+          />
+        </Popup>
+      </Input>
     </div>
   );
 }
